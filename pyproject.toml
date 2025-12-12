@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vibevoice"
+version = "0.1.0"
+description = "A local macOS runner for the VibeVoice Realtime text-to-speech demo"
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    # Keep HF Hub <1.0 to satisfy transformers' constraints used by VibeVoice.
+    "huggingface_hub>=0.30.0,<1.0",
+    # Ensure uv manages VibeVoice + its dependency set (prevents uv from \"undoing\" the env).
+    "vibevoice",
+]
+
+[tool.setuptools]
+# Prevent setuptools from trying to treat top-level folders like `models/` and `third_party/`
+# as importable packages when uv installs this project.
+py-modules = ["main"]
+
+[tool.uv.sources]
+vibevoice = { path = "third_party/VibeVoice", editable = true }
